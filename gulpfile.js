@@ -17,9 +17,9 @@ const postAppend  = fs.readFileSync(path.join(__dirname, srcpath, 'postappend.ht
 
 
 // Tasks
-gulp.task('copyPostCss', () => gulp
-  .src(`./${srcpath}/post/*.css`)
-  .pipe(gulp.dest(`${path.join(__dirname, outpath)}/post/`)));
+gulp.task('copyDepends', () => gulp
+  .src(`./${srcpath}/thirdparty/**`)
+  .pipe(gulp.dest(`${path.join(__dirname, outpath)}/thirdparty`)));
 
 gulp.task('buildPost', ['copyPostCss'], () => gulp
   .src('./src/post/*.md')
