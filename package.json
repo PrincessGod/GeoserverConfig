@@ -1,0 +1,29 @@
+{
+  "name": "geoserver_config",
+  "version": "1.0.0",
+  "description": "Publish shp file in WMS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "geoserver",
+    "wms",
+    "shp"
+  ],
+  "author": "PrincessGod",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0"
+  },
+  "dependencies": {
+    "eslint": "^4.6.1",
+    "github-markdown-css": "^2.8.0",
+    "gulp": "^3.9.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-remarkable": "^1.1.2",
+    "gulp-rename": "^1.2.2"
+  }
+}
