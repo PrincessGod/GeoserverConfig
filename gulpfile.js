@@ -18,10 +18,14 @@ const postAppend  = fs.readFileSync(path.join(__dirname, srcpath, 'postappend.ht
 
 // Tasks
 gulp.task('copyDepends', () => gulp
-  .src(`./${srcpath}/thirdparty/**`)
+  .src([`./${srcpath}/thirdparty/**`])
   .pipe(gulp.dest(`${path.join(__dirname, outpath)}/thirdparty`)));
 
-gulp.task('buildPost', ['copyPostCss'], () => gulp
+gulp.task('copyIndex', () => gulp
+  .src([`./${srcpath}/index.html`])
+  .pipe(gulp.dest(path.join(__dirname, outpath))));
+
+gulp.task('buildPost', () => gulp
   .src('./src/post/*.md')
   .pipe(md({
     remarkableOptions: {
@@ -40,6 +44,7 @@ gulp.task('buildPost', ['copyPostCss'], () => gulp
 
 gulp.task('md_watch', ['buildPost'], browserSync.reload);
 
+gulp.task('html_watch', ['copyIndex'], browserSync.reload);
 // Watch
 gulp.task('watch', () => {
   browserSync({
@@ -48,7 +53,8 @@ gulp.task('watch', () => {
     },
   });
   gulp.watch(`./${srcpath}/**/*.md`, ['md_watch']);
+  gulp.watch(`./${srcpath}/index.html`, ['html_watch']);
 });
 
 // Default Task
-gulp.task('default');
+gulp.task('default', ['buildPost', 'copyDepends', 'copyIndex']);
