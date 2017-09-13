@@ -87,6 +87,47 @@
         font-weight: normal;
     }
 
+    #forkongithub a {
+        /* background: #000;
+        color: #fff; */
+        text-decoration: none;
+        font-family: sans-serif;
+        text-align: center;
+        font-weight: bold;
+        padding: 5px 40px;
+        font-size: .8rem;
+        line-height: 1rem;
+        position: relative;
+        transition: 0.5s;
+        display: block;
+    }
+
+    @media screen and (min-width: 400px){
+        #forkongithub {
+            position: fixed;
+            display: block;
+            top: 0;
+            right: 0;
+            width: 250px;
+            overflow: hidden;
+            height: 250px;
+            z-index: 9999;
+        }
+
+        #forkongithub a {
+            width: 250px;
+            position: absolute;
+            top: 55px;
+            right: -55px;
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+        }
+    }
+
     </style>
 </head>
 
@@ -113,6 +154,9 @@
             </section>
         </div>
     </div>
+
+    <!-- GitHub -->
+    <div id="forkongithub"><a href="https://github.com/PrincessGod/GeoserverConfig">Fix or Fork me on GitHub</a></div>
 </body>
 <script id="vs" type="v-shader">
     attribute vec4 position;
