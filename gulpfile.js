@@ -21,6 +21,10 @@ gulp.task('copyDepends', () => gulp
   .src([`./${srcpath}/thirdparty/**`])
   .pipe(gulp.dest(`${path.join(__dirname, outpath)}/thirdparty`)));
 
+gulp.task('copyImages', () => gulp
+  .src([`./${srcpath}/images/**`])
+  .pipe(gulp.dest(`${path.join(__dirname, outpath)}/images`)));
+
 gulp.task('copyIndex', () => gulp
   .src([`./${srcpath}/index.html`])
   .pipe(gulp.dest(path.join(__dirname, outpath))));
@@ -57,4 +61,4 @@ gulp.task('watch', () => {
 });
 
 // Default Task
-gulp.task('default', ['buildPost', 'copyDepends', 'copyIndex']);
+gulp.task('default', ['buildPost', 'copyDepends', 'copyIndex', 'copyImages']);
