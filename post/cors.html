@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
-    <title>Document</title>
+    <title>配置CORS</title>
     <style>
         /* Logo Font */
         @font-face {
@@ -50,9 +50,9 @@
         }
 
         .logo {
-            color: #7850A7;
+            color: rgb(236, 236, 236);
             font-size: 2em;
-            background: rgb(236, 236, 236);
+            background: #7850A7;
             border-radius: 10px;
             padding: 0 10px;
             position: absolute;
@@ -131,6 +131,11 @@ Origin <span class="hljs-string">'null'</span> <span class="hljs-keyword">is</sp
 <h2>重启服务</h2>
 <p>配置完成后需要重启GeoServer服务以应用CORS，若选的手动安装，只需运行<code>Stop GeoServer</code>再运行<code>Start GeoServer</code>；
 若以服务形式安装的GeoServer，则在Windows服务中重启服务即可。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://www.jianshu.com/p/3bce123cbaf4">Geoserver 2.11.2安装及CORS跨域资源访问配置</a></li>
+<li><a href="https://gis.stackexchange.com/questions/210109/enabling-cors-in-geoserver-jetty">Enabling CORS in GeoServer (jetty)?</a></li>
+</ul>
 </article>
 </body>
 </html>

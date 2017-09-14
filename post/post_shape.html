@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>发布Shapefile图层</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>发布Shapefile图层</h1>
+<p>此文介绍如何将Shapefile数据通过GeoServer发布。</p>
+<h2>准备数据</h2>
+<p>数据源就使用官方文档中使用的<a href="http://docs.geoserver.org/latest/en/user/_downloads/nyc_roads.zip">nyc_roads.zip</a>,
+下载后解压后得到<code>nyc_roads</code>文件夹，文件夹内应该有以下四个文件</p>
+<pre><code>nyc_roads<span class="hljs-selector-class">.shp</span>
+nyc_roads<span class="hljs-selector-class">.shx</span>
+nyc_roads<span class="hljs-selector-class">.dbf</span>
+nyc_roads<span class="hljs-selector-class">.prj</span>
+</code></pre>
+<p>将<code>nyc_roads</code>文件夹放入GeoServer的<code>&lt;GEOSERVER_DATA_DIR&gt;/data</code>目录中，
+其中<code>&lt;GEOSERVER_DATA_DIR&gt;</code>是安装时的数据目录，默认为<code>../geoserver/data_dir</code>。</p>
+<h2>创建一个工作区</h2>
+<p>在<a href="./wmi_intro.md">前文</a>中讲到。工作区是一个服务的数据集合。
+新建一个工作区用来发布服务。</p>
+<p>导航到<strong>工作区</strong>。</p>
+<p>在工作区选项卡中，下方是工作区列表，点击“<strong>添加新的工作区</strong>”来创建工作区。</p>
+<p><img src="../images/workspace.png" alt="Wark Space"></p>
+<p>在<strong>Name</strong>中填写<code>nyc_roads</code>,这是工作区的名称，会影响到服务地址，此时服务地址为<code>localhost:8080/geoserver/nyc_roads</code>。
+在<strong>命名空间 URI</strong>中填写<code>http://geoserver.org/nyc</code>，该路径是名称空间，不需要是有效的Web地址。</p>
+<p><img src="../images/createworkspace.png" alt="Create Wark Space"></p>
+<p>点击<strong>提交</strong>就添加<code>nyc_roads</code>到工作区列表中了。</p>
+<h2>创建一个数据存储</h2>
+<p>数据存储是将数据文件链接到GeoServer中，所以需要添加一个数据存储链接Shapefile文件。</p>
+<p>导航到<strong>数据存储</strong>。</p>
+<p>在数据存储标签页中有现有的数据存储列表，点击<strong>添加新的数据存储</strong>。</p>
+<p><img src="../images/store.png" alt="Store"></p>
+<p>因为我们的数据源是Shapefile，所以选择<strong>Shapefile</strong>项。</p>
+<p><img src="../images/createstore.png" alt="Create Store"></p>
+<p>在<strong>新建矢量数据源</strong>页面中，<strong>工作区</strong>选择<code>nyc_roads</code>,
+<strong>数据源名称</strong>填写<code>NYC Roads</code>，<strong>说明</strong>填写<code>Roads in New York City</code>。</p>
+<p><strong>Shapefile文件的位置</strong>文本框右边有<strong>浏览…</strong>，点击选择准备的<code>nyc_roads.shp</code>。</p>
+<p><strong>DBF字符集</strong>选择<code>GB2312</code>，这样能够支持中文属性字段。</p>
+<p><img src="../images/newshapefile.png" alt="New Shapefile"></p>
+<p>点击<strong>保存</strong>就会导航到<strong>新建图层</strong>页面，接下来要创建图层。</p>
+<h2>创建一个图层</h2>
+<p>在<strong>新建图层</strong>页面，点击图层名<code>nyc_roads</code>右边的发布<strong>发布</strong>。</p>
+<p><img src="../images/createlayer.png" alt="Create Layer"></p>
+<p>在<strong>编辑图层</strong>界面，可以修改<strong>命名</strong>，<strong>标题</strong>和<strong>摘要</strong>。</p>
+<p><img src="../images/editlayer.png" alt="Edit Layer"></p>
+<p>在<strong>边框</strong>中分别点击<strong>从数据中计算</strong>和<strong>Compute from native bounds</strong>。</p>
+<p><img src="../images/editborder.png" alt="Edit Border"></p>
+<p>想要了解其他设置项，可以在<a href="http://docs.geoserver.org/latest/en/user/data/webadmin/layers.html#data-webadmin-layers">官网</a>
+获取更多信息。</p>
+<p>在这里我们点击<strong>保存</strong>就完成了图层的创建。</p>
+<h2>浏览</h2>
+<p>图层创建后能够在<strong>Layer Preview</strong>中找到，点击右边的<strong>OpenLayers</strong>在Openlayers地图中预览。</p>
+<p><img src="../images/nyc_openlayers.png" alt="NYC Layer Preview"></p>
+<p><img src="../images/openlayers.png" alt="NYC Layer Preview"></p>
+<p>如果需要使用WMS服务，则服务地址为<code>localhost:8080/geoserver/nyc_roads/wms</code>，可以访问的图层就是<code>nyc_roads</code>，
+更多WMS参数可以到<a href="http://docs.geoserver.org/latest/en/user/services/wms/reference.html">这里</a>查看。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://docs.geoserver.org/latest/en/user/gettingstarted/shapefile-quickstart/index.html">官方文档</a></li>
+</ul>
+</article>
+</body>
+</html>
