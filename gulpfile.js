@@ -4,6 +4,7 @@ const path        = require('path');
 
 const browserSync = require('browser-sync');
 const gulp        = require('gulp');
+const imagemin    = require('gulp-imagemin');
 const insert      = require('gulp-insert');
 const md          = require('gulp-remarkable');
 const name        = require('gulp-rename');
@@ -23,6 +24,7 @@ gulp.task('copyDepends', () => gulp
 
 gulp.task('copyImages', () => gulp
   .src([`./${srcpath}/images/**`])
+  .pipe(imagemin([imagemin.optipng()], { verbose : true }))
   .pipe(gulp.dest(`${path.join(__dirname, outpath)}/images`)));
 
 gulp.task('copyIndex', () => gulp
