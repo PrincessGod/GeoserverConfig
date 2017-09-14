@@ -8,6 +8,7 @@ const imagemin    = require('gulp-imagemin');
 const insert      = require('gulp-insert');
 const md          = require('gulp-remarkable');
 const name        = require('gulp-rename');
+const replace     = require('gulp-replace');
 
 
 const srcpath = 'src';
@@ -16,6 +17,12 @@ const outpath = 'build';
 const postPrepend = fs.readFileSync(path.join(__dirname, srcpath, 'postprepend.html'), 'utf8');
 const postAppend  = fs.readFileSync(path.join(__dirname, srcpath, 'postappend.html'), 'utf8');
 
+const titles = {
+  install: '安装GeoServer',
+  cors: '配置CORS',
+  wmi_intro: 'Web管理界面简介',
+  post_shape: '发布Shapefile图层',
+};
 
 // Tasks
 gulp.task('copyDepends', () => gulp
@@ -32,7 +39,7 @@ gulp.task('copyIndex', () => gulp
   .pipe(gulp.dest(path.join(__dirname, outpath))));
 
 gulp.task('buildPost', () => gulp
-  .src('./src/post/*.md')
+  .src(`./${srcpath}/post/*.md`)
   .pipe(md({
     remarkableOptions: {
       typographer: true,
@@ -48,7 +55,14 @@ gulp.task('buildPost', () => gulp
   }))
   .pipe(gulp.dest(path.join(__dirname, outpath))));
 
-gulp.task('md_watch', ['buildPost'], browserSync.reload);
+gulp.task('changeTitle', ['buildPost'], () => gulp
+  .src(`./${outpath}/post/*.html`)
+  .pipe(replace('--title--', function () {
+    return `<title>${titles[this.file.relative.replace(/\.[^/.]+$/, '')] || 'GeoServer配置'}</title>`;
+  }))
+  .pipe(gulp.dest(`./${outpath}/post/`)));
+
+gulp.task('md_watch', ['changeTitle'], browserSync.reload);
 
 gulp.task('html_watch', ['copyIndex'], browserSync.reload);
 // Watch
@@ -63,4 +77,4 @@ gulp.task('watch', () => {
 });
 
 // Default Task
-gulp.task('default', ['buildPost', 'copyDepends', 'copyIndex', 'copyImages']);
+gulp.task('default', ['changeTitle', 'copyDepends', 'copyIndex', 'copyImages']);
