@@ -58,3 +58,8 @@ Origin 'null' is therefore not allowed access.
 ## 重启服务
 配置完成后需要重启GeoServer服务以应用CORS，若选的手动安装，只需运行`Stop GeoServer`再运行`Start GeoServer`；
 若以服务形式安装的GeoServer，则在Windows服务中重启服务即可。
+
+## 相关链接
+
+* [Geoserver 2.11.2安装及CORS跨域资源访问配置](http://www.jianshu.com/p/3bce123cbaf4)
+* [Enabling CORS in GeoServer (jetty)?](https://gis.stackexchange.com/questions/210109/enabling-cors-in-geoserver-jetty)

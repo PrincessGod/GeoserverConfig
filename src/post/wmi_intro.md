@@ -34,3 +34,7 @@
 
 * **服务**
 不同的服务对应的设置，若需要特别设置可以针对性的为某个服务进行设置。
+
+## 相关链接
+
+* [Web administration interface](http://docs.geoserver.org/latest/en/user/webadmin/index.html#web-admin)

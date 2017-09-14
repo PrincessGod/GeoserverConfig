@@ -72,3 +72,7 @@
 
 ## 卸载
 在开始菜单中GeoServer文件夹下运行`uninstall.exe`卸载，或者在Windows程序管理中卸载。
+
+## 相关链接
+
+* [官方文档](http://docs.geoserver.org/latest/en/user/installation/index.html#installation)
