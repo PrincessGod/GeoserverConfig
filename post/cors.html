@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>Document</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: #7850A7;
+            font-size: 2em;
+            background: rgb(236, 236, 236);
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>配置 CORS</h1>
+<blockquote>
+<p><strong>Cross-origin resource sharing (CORS)</strong> is a mechanism that allows restricted resources (e.g. fonts) on a web page to be requested from another domain outside the domain from which the first resource was served.</p>
+<p>----<a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing"><em>From Wikipedia</em></a></p>
+</blockquote>
+<p>CORS也叫“跨域资源共享”，是一种机制用于在服务器之间共享限制资源（比如字体，图片等），
+我们这里需要给GeoServer开启CORS，以便发布的WMS服务能够被其他服务器访问，获取瓦片图像。</p>
+<p>如果没有开启CORS，则在访问WMS服务时会根据浏览器不同得到类似的错误提示</p>
+<pre><code>XMLHttpRequest cannot <span class="hljs-keyword">load</span> <span class="hljs-keyword">http</span>:***************.
+<span class="hljs-keyword">No</span> <span class="hljs-string">'Access-Control-Allow-Origin'</span> header <span class="hljs-keyword">is</span> <span class="hljs-keyword">present</span> <span class="hljs-keyword">on</span> the requested resource. 
+Origin <span class="hljs-string">'null'</span> <span class="hljs-keyword">is</span> therefore <span class="hljs-keyword">not</span> allowed access.
+</code></pre>
+<h2>查看服务器</h2>
+<p>在<a href="./install.html">上文</a>中讲到我使用的是<em>Windows Installer</em>，
+该版本的GeoServer自带<a href="http://www.eclipse.org/jetty/">Jetty</a>服务器，
+若不是此版本，则需要清楚当前版本使用的是什么服务器（通常是<a href="http://tomcat.apache.org/">Tomcat</a>），
+本文只讲述关于Jetty服务器的CORS配置，若是其他服务器，就找对应服务器的CORS配置即可。</p>
+<h2>Jetty 配置 CORS</h2>
+<p>配置CORS需要找到两个路径</p>
+<ul>
+<li><code>../GeoServer 2.11.2/webapps/geoserver/WEB-INF/web.xml</code></li>
+<li><code>../GeoServer 2.11.2/webapps/geoserver/WEB-INF/lib</code></li>
+</ul>
+<p>其中<code>../GeoServer 2.11.2</code>就是GeoServer的安装目录。</p>
+<p>在<code>../GeoServer 2.11.2/webapps/geoserver/WEB-INF/web.xml</code>文件中，找到</p>
+<pre><code><span class="hljs-comment">&lt;!-- Uncomment following filter to enable CORS --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>cross-origin<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>org.eclipse.jetty.servlets.CrossOriginFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span>
+</code></pre>
+<pre><code><span class="hljs-comment">&lt;!-- Uncomment following filter to enable CORS --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>cross-origin<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span>
+</code></pre>
+<p>按照注释将下方的标签取消注释后就是上方的结果。</p>
+<p>接下来要下载<a href="https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-servlets">jetty-servlets</a>,
+下载的版本根据实际情况，我的<code>../GeoServer 2.11.2/lib</code>目录下找到了</p>
+<p><img src="../images/jettyfiles.png" alt="Jetty files"></p>
+<p>可以看出我应该下载的是<code>9.2.13.v20150730</code>版本，下载后得到<code>jetty-servlets-9.2.13.v20150730.jar</code>文件，
+将它拷贝到<code>../GeoServer 2.11.2/webapps/geoserver/WEB-INF/lib</code>中。</p>
+<h2>重启服务</h2>
+<p>配置完成后需要重启GeoServer服务以应用CORS，若选的手动安装，只需运行<code>Stop GeoServer</code>再运行<code>Start GeoServer</code>；
+若以服务形式安装的GeoServer，则在Windows服务中重启服务即可。</p>
+</article>
+</body>
+</html>
