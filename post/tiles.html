@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>生成图层瓦片数据</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>生成图层瓦片数据</h1>
+<p>地图数据通常以瓦片图的形式发布，而访问量比较大的时候就不能让GeoServer实时创建瓦片图，
+应提前生成瓦片图，让服务器直接提供所需的图像，减轻服务器的压力。</p>
+<h2>生成图层瓦片图</h2>
+<p>GeoServer提供了现成的切图工具，可以将矢量图层预先切成标准的瓦片数据。</p>
+<p>在WAI中点击左侧的<strong>Tile Caching</strong>&gt;<strong>Tile Layers</strong>，右侧显示现有的图层列表，
+点击<code>nyc_roads</code>图层所在行右侧的<code>Seed/Truncate</code>，进入瓦片制作工具。</p>
+<p>在<strong>Create a new task</strong>中修改参数</p>
+<p><em>Number of tasks to use</em>使用的线程数为<code>10</code></p>
+<p><em>Zoom stop</em>最大级别为<code>20</code>，由于数据量比较小，所以到20级也不会很大。</p>
+<p><img src="../images/cut_tiles.png" alt="Cut tiles"></p>
+<p>点击<strong>submit</strong>按钮就开始切割了，可以在表格中看到进度</p>
+<p><img src="../images/cut_progress.png" alt="Cut progress"></p>
+<p>过一会点击<strong>Refresh list</strong>链接，查看进度，切片应该很快就完成了。</p>
+<p>切片完成后可以到<code>&lt;GEOSERVER_DATA_DIR&gt;/gwc/nyc_roads_nyc_roads</code>中看到切好的图片，
+这里<code>&lt;GEOSERVER_DATA_DIR&gt;</code>是GeoServer的数据目录，<code>nyc_roads_nyc_roads</code>是工作区和图层名的组合。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://docs.geoserver.org/latest/en/user/geowebcache/webadmin/layers.html">官方瓦片图制作相关资料</a></li>
+</ul>
+</article>
+</body>
+</html>
