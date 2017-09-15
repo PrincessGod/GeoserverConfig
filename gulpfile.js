@@ -24,6 +24,7 @@ const titles = {
   post_shape: '发布Shapefile图层',
   style:      'WAI中设置样式',
   style_udig: '使用uDig辅助样式设计',
+  tiles:      '生成图层瓦片数据',
 };
 
 // Tasks
