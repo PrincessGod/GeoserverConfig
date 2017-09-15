@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>在Cesium中访问WMS服务</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>在Cesium中访问WMS服务</h1>
+<p>Cesium提供了多种地图服务支持，当前GeoServer支持WMS 1.1.1。我是用的Cesium 1.35 也支持WMS 1.1.1。</p>
+<h2>访问不使用缓存数据的WMS</h2>
+<p>Geoserver的WMS服务路径格式为<code>http://&lt;ip&gt;:&lt;port&gt;/geoserver/&lt;work-space&gt;/wms</code>。</p>
+<p>其中<code>&lt;ip&gt;</code>和<code>&lt;port&gt;</code>表示服务器的IP和端口号，<code>&lt;work-space&gt;</code>表示工作区的名称。</p>
+<p>在这里我使用的本地服务，并且端口号为8085，所以服务路径为<code>http://localhost:8085/geoserver/nyc_roads/wms</code>。</p>
+<p>在Cesium加载WMS图层的代码如下</p>
+<pre><code><span class="hljs-keyword">var</span> provider = <span class="hljs-keyword">new</span> <span class="hljs-type">Cesium</span>.<span class="hljs-type">WebMapServiceImageryProvider</span>({
+              url: <span class="hljs-symbol">'http</span>:<span class="hljs-comment">//localhost:8085/geoserver/nyc_roads/wms',</span>
+              layers: <span class="hljs-symbol">'nyc_roads</span>:nyc_roads',
+              parameters: {
+                  format: <span class="hljs-symbol">'image</span>/png',
+                  transparent: <span class="hljs-literal">true</span>,
+              }
+          });
+
+viewer.imageryLayers.addImageryProvider(provider);
+</code></pre>
+<p>在Cesium中的结果</p>
+<p><img src="../images/wms.png" alt="WMS"></p>
+<h2>访问使用瓦片缓存数据的WMS</h2>
+<p>使用瓦片缓冲（GeoWebCache）访问WMS，只需在普通路径<code>/wms</code>前添加<code>/gwc/service</code>。</p>
+<p>所以路径就变为<code>http://localhost:8085/geoserver/nyc_roads/gwc/service/wms</code>。</p>
+<p>同时可以限制最大级别为<code>21</code>，因为我们只切了<code>0-20</code>级，总共21个级别。</p>
+<p>修改代码为</p>
+<pre><code><span class="hljs-string">var</span> <span class="hljs-string">provider</span> <span class="hljs-string">=</span> <span class="hljs-string">new</span> <span class="hljs-string">Cesium.WebMapServiceImageryProvider({</span>
+<span class="hljs-attr">              url:</span> <span class="hljs-string">'http://localhost:8085/geoserver/nyc_roads/gwc/service/wms'</span><span class="hljs-string">,</span>
+<span class="hljs-attr">              layers:</span> <span class="hljs-string">'nyc_roads:nyc_roads'</span><span class="hljs-string">,</span>
+<span class="hljs-attr">              maximumLevel:</span> <span class="hljs-number">21</span><span class="hljs-string">,</span>
+<span class="hljs-attr">              parameters:</span> <span class="hljs-string">{</span>
+<span class="hljs-attr">                  format:</span> <span class="hljs-string">'image/png'</span><span class="hljs-string">,</span>
+<span class="hljs-attr">                  transparent:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+<span class="hljs-attr">                  tiled:</span> <span class="hljs-literal">true</span>
+              <span class="hljs-string">}</span>
+
+          <span class="hljs-string">});</span>
+
+<span class="hljs-string">viewer.imageryLayers.addImageryProvider(provider);</span>
+</code></pre>
+<p>由于在最大级别时已经是很大的比例尺，所以两者显示区别并不大。但使用瓦片缓存数据可以有效减少服务器的压力。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://docs.geoserver.org/latest/en/user/services/wms/index.html">WMS 详细资料</a></li>
+<li><a href="https://cesiumjs.org/">Cesium 官网</a></li>
+</ul>
+</article>
+</body>
+</html>
