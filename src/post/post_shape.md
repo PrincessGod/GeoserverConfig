@@ -90,4 +90,4 @@ nyc_roads.prj
 
 ## 相关链接
 
-* [官方文档](http://docs.geoserver.org/latest/en/user/gettingstarted/shapefile-quickstart/index.html)
+* [发布Shapefile的官方教程](http://docs.geoserver.org/latest/en/user/gettingstarted/shapefile-quickstart/index.html)

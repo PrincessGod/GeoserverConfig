@@ -75,4 +75,4 @@
 
 ## 相关链接
 
-* [官方文档](http://docs.geoserver.org/latest/en/user/installation/index.html#installation)
+* [关于安装GeoServer的官方文档](http://docs.geoserver.org/latest/en/user/installation/index.html#installation)

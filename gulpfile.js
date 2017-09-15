@@ -18,10 +18,11 @@ const postPrepend = fs.readFileSync(path.join(__dirname, srcpath, 'postprepend.h
 const postAppend  = fs.readFileSync(path.join(__dirname, srcpath, 'postappend.html'), 'utf8');
 
 const titles = {
-  install: '安装GeoServer',
-  cors: '配置CORS',
-  wmi_intro: 'Web管理界面简介',
+  install:    '安装GeoServer',
+  cors:       '配置CORS',
+  wmi_intro:  'Web管理界面简介',
   post_shape: '发布Shapefile图层',
+  style:      'WAI中设置样式',
 };
 
 // Tasks
