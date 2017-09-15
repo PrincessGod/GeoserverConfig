@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>WAI中设置样式</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>WAI中设置样式</h1>
+<p>在GeoServer中设置图层样式通常使用<a href="http://www.opengeospatial.org/standards/sld">STD(Styled Layer Descriptor)</a>，
+在Web管理界面（WAI）中自带STD编辑器，此文介绍如何在WAI中使用STD设置图层样式。</p>
+<h2>Styles 页面</h2>
+<p>在WAI的<strong>Styles</strong>页面中，列出了当前所有的样式。</p>
+<p><img src="../images/stylespage.png" alt="Styles page"></p>
+<p>在这里你可以添加样式（<em>Add a new style</em>），移除现有样式（<em>Removed selected style(s)</em>），
+或者点击现有样式进行编辑。</p>
+<h2>添加一个样式</h2>
+<p>点击<strong>Add a new style</strong>进入新建样式页面。</p>
+<p>在<strong>Name</strong>中命名样式为<code>nyc_road_style</code>。</p>
+<p>在<strong>工作区</strong>项选择之前建立的<code>nyc_roads</code>。</p>
+<p><img src="../images/styleattribute.png" alt="Style attributes"></p>
+<p>然后在编辑器中填写STD代码，由于这个样式将要用在<code>nyc_roads.shp</code>上，
+这个图层都是线要素，所以使用针对线要素样式的STD。这里我将使用以下代码</p>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">StyledLayerDescriptor</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.opengis.net/sld"</span> <span class="hljs-attr">xmlns:ogc</span>=<span class="hljs-string">"http://www.opengis.net/ogc"</span> <span class="hljs-attr">xmlns:xlink</span>=<span class="hljs-string">"http://www.w3.org/1999/xlink"</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0.0"</span> <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://www.opengis.net/sld StyledLayerDescriptor.xsd"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">NamedLayer</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Name</span>&gt;</span>Simple Line<span class="hljs-tag">&lt;/<span class="hljs-name">Name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">UserStyle</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Title</span>&gt;</span>SLD Cook Book: Simple Line<span class="hljs-tag">&lt;/<span class="hljs-name">Title</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">FeatureTypeStyle</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">Rule</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">LineSymbolizer</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">Stroke</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">CssParameter</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"stroke"</span>&gt;</span>#000000<span class="hljs-tag">&lt;/<span class="hljs-name">CssParameter</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">CssParameter</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"stroke-width"</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">CssParameter</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">Stroke</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">LineSymbolizer</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">Rule</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">FeatureTypeStyle</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">UserStyle</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">NamedLayer</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">StyledLayerDescriptor</span>&gt;</span>
+</code></pre>
+<p>这段代码只是将线的颜色设置为黑色<code>#000000</code>，线宽设置为3。</p>
+<p>在<strong>Style Editor</strong>中写完以后，可以点击<strong>Validate</strong>按钮，测试代码是否有误。</p>
+<p><img src="../images/styleeditor.png" alt="Style editor"></p>
+<p>如果无误会在页面上方显示<code>No validation errors</code></p>
+<p><img src="../images/noerror.png" alt="No errors"></p>
+<p>否则会显示错误信息。</p>
+<p><img src="../images/haserror.png" alt="Has error"></p>
+<p>确认无误以后点击<strong>提交</strong>，就会保存编辑内容，并新建一个样式，可以在表格中找到。</p>
+<h2>应用样式到图层</h2>
+<p>我们将对<a href="./post_shape.html">之前</a>发布的<code>nyc_roads</code>图层应用新的样式。</p>
+<p>在图层页面中找到<code>nyc_roads</code>图层，点击进入编辑界面，选择<strong>发布</strong>选项卡。</p>
+<p><img src="../images/publishtab.png" alt="Publish tab"></p>
+<p>在<strong>WMS Settings</strong>&gt;<strong>Layer Settings</strong>&gt;<strong>Default Style</strong>中选择<code>nyc_roads:nyc_road_style</code>，
+也就是刚才创建的样式，其中<code>nyc_roads</code>表示样式的工作区，<code>nyc_road_style</code>表示样式名称。</p>
+<p><img src="../images/defaultstyle.png" alt="Default style"></p>
+<p>如果你想使用多个样式，可以在下方的<strong>Additional Styles</strong>中左侧选择想要附加的样式，点击<strong>=&gt;</strong>按钮添加到右侧。
+也可以选中右侧中添加的样式点击<strong>&lt;=</strong>按钮取消添加。</p>
+<p>设置完成后点击页面下方的<strong>保存</strong>应用设置。然后可以在<strong>Layer Preview</strong>中预览<code>nyc_roads</code>图层，
+发现样式已经应用，线变宽了，颜色也变为黑色。</p>
+<p><img src="../images/styledlayer.png" alt="Styled layer"></p>
+<p>想要了解更多STD的用法，可以在<a href="http://docs.geoserver.org/latest/en/user/styling/sld/index.html">官方教程</a>查看。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://docs.geoserver.org/latest/en/user/styling/index.html">GeoServer中设置样式的方式</a></li>
+</ul>
+</article>
+</body>
+</html>
