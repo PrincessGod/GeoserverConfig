@@ -1,7 +1,7 @@
 # WAI中设置样式
 
-在GeoServer中设置图层样式通常使用[STD(Styled Layer Descriptor)](http://www.opengeospatial.org/standards/sld)，
-在Web管理界面（WAI）中自带STD编辑器，此文介绍如何在WAI中使用STD设置图层样式。
+在GeoServer中设置图层样式通常使用[SLD(Styled Layer Descriptor)](http://www.opengeospatial.org/standards/sld)，
+在Web管理界面（WAI）中自带SLD编辑器，此文介绍如何在WAI中使用SLD设置图层样式。
 
 ## Styles 页面
 
@@ -22,8 +22,8 @@
 
 ![Style attributes](../images/styleattribute.png)
 
-然后在编辑器中填写STD代码，由于这个样式将要用在`nyc_roads.shp`上，
-这个图层都是线要素，所以使用针对线要素样式的STD。这里我将使用以下代码
+然后在编辑器中填写SLD代码，由于这个样式将要用在`nyc_roads.shp`上，
+这个图层都是线要素，所以使用针对线要素样式的SLD。这里我将使用以下代码
 
 ```
 <StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd">
@@ -83,7 +83,7 @@
 
 ![Styled layer](../images/styledlayer.png)
 
-想要了解更多STD的用法，可以在[官方教程](http://docs.geoserver.org/latest/en/user/styling/sld/index.html)查看。
+想要了解更多SLD的用法，可以在[官方教程](http://docs.geoserver.org/latest/en/user/styling/sld/index.html)查看。
 
 ## 相关链接
 

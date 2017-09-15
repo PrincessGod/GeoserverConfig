@@ -23,6 +23,7 @@ const titles = {
   wmi_intro:  'Web管理界面简介',
   post_shape: '发布Shapefile图层',
   style:      'WAI中设置样式',
+  style_udig: '使用uDig辅助样式设计',
 };
 
 // Tasks
