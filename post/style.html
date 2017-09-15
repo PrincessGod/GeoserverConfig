@@ -86,8 +86,8 @@
 <section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
 <article class="markdown-body">
 <h1>WAI中设置样式</h1>
-<p>在GeoServer中设置图层样式通常使用<a href="http://www.opengeospatial.org/standards/sld">STD(Styled Layer Descriptor)</a>，
-在Web管理界面（WAI）中自带STD编辑器，此文介绍如何在WAI中使用STD设置图层样式。</p>
+<p>在GeoServer中设置图层样式通常使用<a href="http://www.opengeospatial.org/standards/sld">SLD(Styled Layer Descriptor)</a>，
+在Web管理界面（WAI）中自带SLD编辑器，此文介绍如何在WAI中使用SLD设置图层样式。</p>
 <h2>Styles 页面</h2>
 <p>在WAI的<strong>Styles</strong>页面中，列出了当前所有的样式。</p>
 <p><img src="../images/stylespage.png" alt="Styles page"></p>
@@ -98,8 +98,8 @@
 <p>在<strong>Name</strong>中命名样式为<code>nyc_road_style</code>。</p>
 <p>在<strong>工作区</strong>项选择之前建立的<code>nyc_roads</code>。</p>
 <p><img src="../images/styleattribute.png" alt="Style attributes"></p>
-<p>然后在编辑器中填写STD代码，由于这个样式将要用在<code>nyc_roads.shp</code>上，
-这个图层都是线要素，所以使用针对线要素样式的STD。这里我将使用以下代码</p>
+<p>然后在编辑器中填写SLD代码，由于这个样式将要用在<code>nyc_roads.shp</code>上，
+这个图层都是线要素，所以使用针对线要素样式的SLD。这里我将使用以下代码</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-name">StyledLayerDescriptor</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.opengis.net/sld"</span> <span class="hljs-attr">xmlns:ogc</span>=<span class="hljs-string">"http://www.opengis.net/ogc"</span> <span class="hljs-attr">xmlns:xlink</span>=<span class="hljs-string">"http://www.w3.org/1999/xlink"</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0.0"</span> <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://www.opengis.net/sld StyledLayerDescriptor.xsd"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">NamedLayer</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">Name</span>&gt;</span>Simple Line<span class="hljs-tag">&lt;/<span class="hljs-name">Name</span>&gt;</span>
@@ -139,7 +139,7 @@
 <p>设置完成后点击页面下方的<strong>保存</strong>应用设置。然后可以在<strong>Layer Preview</strong>中预览<code>nyc_roads</code>图层，
 发现样式已经应用，线变宽了，颜色也变为黑色。</p>
 <p><img src="../images/styledlayer.png" alt="Styled layer"></p>
-<p>想要了解更多STD的用法，可以在<a href="http://docs.geoserver.org/latest/en/user/styling/sld/index.html">官方教程</a>查看。</p>
+<p>想要了解更多SLD的用法，可以在<a href="http://docs.geoserver.org/latest/en/user/styling/sld/index.html">官方教程</a>查看。</p>
 <h2>相关链接</h2>
 <ul>
 <li><a href="http://docs.geoserver.org/latest/en/user/styling/index.html">GeoServer中设置样式的方式</a></li>

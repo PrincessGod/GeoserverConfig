@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>使用uDig辅助样式设计</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>使用uDig辅助样式设置</h1>
+<p>如果对SLD不太熟悉，只想做一些简单的样式设置的话，可以使用软件<a href="http://udig.refractions.net/">uDig</a>
+辅助生成SLD代码。</p>
+<h2>安装uDig</h2>
+<p>首先到<a href="http://udig.refractions.net/download/">官网</a>下载合适的安装包，
+我这里使用的是<code>Release 2.0.0.RC1</code>版本，<code>x86_64 Zip</code>，这样我就可以不用安装，
+直接在文件夹中运行<code>udig.bat</code>，你也可以下载安装包安装到系统中。</p>
+<p><img src="../images/udig.png" alt="uDig"></p>
+<h2>导入Shapefile</h2>
+<p>在菜单栏选择<strong>Layer</strong>&gt;<strong>Add…</strong>，进入添加数据窗口。</p>
+<p><img src="../images/udig_layer.png" alt="uDig add data"></p>
+<p>选择<strong>Files</strong>，点击<strong>Next</strong>按钮并在文件选择对话框中找到之前的<code>nyc_roads.shp</code>，打开。</p>
+<p><img src="../images/udig_loaded.png" alt="uDig loaded layer"></p>
+<h2>设置线段样式</h2>
+<p>在图层列表中选中<code>nyc_roads</code>，点击右上角的调色盘，打开样式设置窗口</p>
+<p><img src="../images/udig_plate.png" alt="Palete icon"></p>
+<p><img src="../images/udig_lines.png" alt="uDig layer"></p>
+<p>由于<code>nyc_roads</code>图层都是线要素，所以我们只用关心线要素的样式定义。
+在<strong>Lines</strong>页面中，我们有一个<code>group0</code>样式组，还有一个默认样式<code>default rule</code>。</p>
+<p>在<strong>Border</strong>选项卡中设置线的样式，<em>width</em>设置为<code>2.0</code>，<em>color</em>设置为黑色。</p>
+<p><img src="../images/rule1.png" alt="Rule 1"></p>
+<p>在样式组下方点击<strong>＋</strong>添加一个新规则，再点击<strong>↓</strong>将它移到上一个规则上层。</p>
+<p><img src="../images/newrule.png" alt="Add rule"></p>
+<p>将新规则的<em>with</em>也设置为<code>2.0</code>，<em>color</em>设置为白色，<em>dash</em>设置为<code>10</code>。
+<img src="../images/rule2.png" alt="Rule 2"></p>
+<p>这时候可以在左上方的预览图中看到最终效果，是黑白相间的线段，白色线段的长度为10个单位。</p>
+<p>点击<strong>Apply</strong>保存设置，再点击左侧的<strong>XML</strong>标签就会在右侧显示对应SLD代码。</p>
+<p><img src="../images/udig_xml.png" alt="uDig XML"></p>
+<h2>预览样式</h2>
+<p>设置完成后，点击<strong>OK</strong>按钮，保存并退出样式设置窗口，回到uDig主界面，
+会发现样式已经应用了，可以在预览窗口中缩放，拖动查看效果。</p>
+<p><img src="../images/udig_result.png" alt="uDig result"></p>
+<h2>使用样式</h2>
+<p>现在有了SLD代码，可以像<a href="./style.html">上文</a>那样在GeoServer中对图层使用新样式。</p>
+<p>更多uDig的属性设置可以动手试试，或者到<a href="http://udig.refractions.net/users/">uDig官网</a>
+获取更多相关资料。</p>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://udig.refractions.net/users/">uDig官方资料</a></li>
+<li><a href="http://docs.geoserver.org/latest/en/user/styling/sld/index.html">GeoServer SLD 教程</a></li>
+</ul>
+</article>
+</body>
+</html>
