@@ -26,6 +26,7 @@ const titles = {
   style_udig: '使用uDig辅助样式设计',
   tiles:      '生成图层瓦片数据',
   wms:        '在Cesium中访问WMS服务',
+  optimize:   '环境优化',
 };
 
 // Tasks
