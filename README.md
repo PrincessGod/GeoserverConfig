@@ -18,7 +18,7 @@
 * 在终端运行
 
 ```
-    npm install
+npm install
 ```
     
 如果使用非Windows系统，可能需要在行头加上`sudo`。
@@ -33,4 +33,4 @@
 
     gulp watch
     
-键盘组合键`Ctrl+C`停止服务
+键盘组合键`Ctrl+C`停止服务。
