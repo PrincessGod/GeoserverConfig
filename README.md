@@ -16,13 +16,19 @@
 * 使用 `git clone` 或下载压缩文件，将项目下载到本地
 * 确保已经安装[Node.js](https://nodejs.org/en/)
 * 在终端运行
+
     npm install
+    
 如果使用非Windows系统，可能需要在行头加上`sudo`。
 
 如果需要编译项目
+
     gulp
+    
 编译结果在`./build`目录下，源文件在`./src`目录下
 
 如果需要做修改，并启用live-reload
+
     gulp watch
+    
 键盘组合键`Ctrl+C`停止服务
