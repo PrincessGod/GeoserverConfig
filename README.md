@@ -17,7 +17,9 @@
 * 确保已经安装[Node.js](https://nodejs.org/en/)
 * 在终端运行
 
+```
     npm install
+```
     
 如果使用非Windows系统，可能需要在行头加上`sudo`。
 
