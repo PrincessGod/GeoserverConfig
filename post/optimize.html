@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../thirdparty/githubcss2_8_0/github-markdown.css">
+    <title>环境优化</title>
+    <style>
+        /* Logo Font */
+        @font-face {
+            font-family: "logoFont";
+            src:url("../thirdparty/raconteur/RaconteurNF.ttf");
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: #7850A7;
+            position: relative;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            display: inline-block;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -4px 0px 0px #D3BDEC;
+        }
+
+        .logo {
+            color: rgb(236, 236, 236);
+            font-size: 2em;
+            background: #7850A7;
+            border-radius: 10px;
+            padding: 0 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-family: logoFont;
+        }
+
+        a:not(.title) {
+            color: #48354D;
+            text-decoration: none;
+            transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e0d6eb;
+            box-shadow: inset 0 -2px 0px 0px #D3BDEC;
+            font-weight: bold;
+        }
+
+        a:not(.title):hover {
+            text-decoration: none;
+            background:#D3BDEC;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<section class="header"><div><a class="title" href="../index.html">GeoServer 配置 <span class="logo">GC</span></a></div></section>
+<article class="markdown-body">
+<h1>环境优化</h1>
+<p>此文介绍关于GeoServer的优化部分，主要分为 JVM 和 GerServer 两部分。</p>
+<h2>JVM 相关优化</h2>
+<h3>安装JAI扩展</h3>
+<p><a href="http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html">Java Advanced Imaging API</a>
+(JAI)是一个甲骨文提供的图像处理库，GeoServer需要使用它生成WMS瓦片影像，
+JAI的性能对所有栅格化处理都很重要，尤其是WMS和WCS中缩放，裁剪，重构光栅内容等部分。</p>
+<p><a href="http://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html">Java Image I/O Technology</a>
+用于栅格文件的读写，主要使用在WMS和WCS的栅格图像读取部分，对WMS的输出影响也很大，因为输出的编码格式要求为PNG/GIF/JPEG图像。</p>
+<p>GeoServer默认包含一个“纯Java”版本的JAI，但是处于性能考虑，
+可以将JAI和ImageIO作为“Java 扩展”安装在你的JDK/JRE上。</p>
+<p>目前JAI在Windows上只有32位版本，具体安装细节可以到<a href="http://docs.geoserver.org/latest/en/user/production/java.html">官网</a>查看。</p>
+<h3>JVM 参数调整</h3>
+<p>主要对JVM容器进行调整，根据需求和硬件选择合适的环境配置。</p>
+<table>
+<thead>
+<tr><th>参数</th><th>含义</th><th>默认值</th><th>描述</th></tr>
+</thead>
+<tbody>
+<tr><td><code>-Xms128m</code></td><td>JVM初始堆大小</td><td>物理内存的 1/64</td><td>这里<code>Xms128m</code>表示在JVM初始化时获取128M内存。当可用堆大小小于40%时会增大到<code>-Xmx</code>最大限制。</td></tr>
+<tr><td><code>-Xmx756M</code></td><td>最大堆大小</td><td>物理内存的 1/4</td><td>默认(MaxHeapFreeRatio参数可以调整)空余堆内存大于70%时，JVM会减少堆直到<code>-Xms</code>的最小限制。</td></tr>
+<tr><td><code>-XX:SoftRefLRUPolicyMSPerMB=36000</code></td><td>每兆堆空闲空间中SoftReference的存活时间</td><td>1s</td><td>GeoServer使用SoftReference缓存数据，将这个值增加到<code>36000</code>（也就是 36s）有助于提高缓冲的效率</td></tr>
+<tr><td><code>-XX:+UseParallelGC</code></td><td>使用并行垃圾收集器</td><td></td><td>默认的垃圾收集器，在使用一些线程回收内存时暂停应用。如果是轻量级的使用，并且垃圾可以容忍暂停就可以使用该项。</td></tr>
+<tr><td><code>-XX:+UseParNewGC</code></td><td>设置年轻带使用并行收集器</td><td></td><td>启用CMS(Concurrent mark sweep)，在程序运行时使用多线程回收内存，在服务器持续使用时推荐此项，堆大小至少为 6GB。</td></tr>
+</tbody>
+</table>
+<p>更多关于垃圾回收的参数设置可以阅读文章<a href="http://www.petefreitag.com/articles/gctuning/">Tuning Garbage Collection Outline</a>
+和<a href="http://blog.takipi.com/garbage-collectors-serial-vs-parallel-vs-cms-vs-the-g1-and-whats-new-in-java-8/">The 4 Java Garbage Collectors</a>。</p>
+<h3>启用 Marlin 光栅化</h3>
+<p>在 Java 8 中使用 Marlin 光栅化，可以提升渲染矢量数据的性能。</p>
+<p>使用以下代码可以在 JVM 启动时启用 Marlin 光栅化。</p>
+<h2>GeoServer 相关优化</h2>
+<h3>选择合适的服务策略（Service Strategy）</h3>
+<p>服务策略就是服务器向客户端提供输出的方法，需要在正确的形式（确保报告合适的错误信息之类）和速度
+（最快化服务输出能力）之前进行权衡。你可以通过编辑GeoServer实例的<code>web.xml</code>文件修改服务策略。</p>
+<table>
+<thead>
+<tr><th>策略</th><th>描述</th></tr>
+</thead>
+<tbody>
+<tr><td><code>SPEED</code></td><td>以最快速度输出，省略OGC错误报告</td></tr>
+<tr><td><code>BUFFER</code></td><td>将所有的结果先存储在内存中，等输出都完成后再传送这些数据，这样可以确保报告OGC错误，但会稍有延迟，如果请求量大的时候，会迅速消耗完内存。</td></tr>
+<tr><td><code>FILE</code></td><td>和 <code>BUFFER</code> 相似，但是将结果存储在文件中而不是内存中，可以避免内存错误，但同时会慢一些。</td></tr>
+<tr><td><code>PARTIAL-BUFFER</code></td><td>介于<code>FILE</code>和<code>BUFFER</code>之间，这种方式在内存中使用几KB用于响应请求，然后提供所有输出服务。</td></tr>
+</tbody>
+</table>
+<h3>自定义服务</h3>
+<p>为了让GeoServer更有用，最好制定自己的服务元数据。</p>
+<p>例如</p>
+<ul>
+<li>填写WMS，WFS和WCS的内容部分，也可以关闭不需要使用的服务。</li>
+<li>将数据服务放在自己的名称空间中（当然也要提供正确的服务地址）。</li>
+<li>移除不需要的图层，比如默认图层<code>topp:states</code>等。</li>
+</ul>
+<h3>调整服务限制</h3>
+<p>不要让客户端从服务器请求过量的数据。</p>
+<p>例如</p>
+<ul>
+<li>设置WFS的GetFeature请求的最大要素数。</li>
+<li>设置WMS的<code>request limits</code>确保请求不会占用太多内存或者请求次数过多。</li>
+</ul>
+<h2>相关链接</h2>
+<ul>
+<li><a href="http://docs.geoserver.org/latest/en/user/production/index.html">构建高效的运行环境</a></li>
+</ul>
+</article>
+</body>
+</html>
