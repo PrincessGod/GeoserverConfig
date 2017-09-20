@@ -1,6 +1,6 @@
 # GeoServer 配置
 
-这里有一些关于GeoServer配置的[文章](princessgod.github.io/GeoserverConfig)。
+这里有一些关于GeoServer配置的[文章](http://princessgod.github.io/GeoserverConfig/)。
 
 ## 如何修改错误或补充内容
 
