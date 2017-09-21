@@ -9,7 +9,7 @@
 3. 修改所需内容
 4. 提交 Pull Request
 
-或者直接在 issue 中提出意见或建议。
+或者直接在 [issues](https://github.com/PrincessGod/GeoserverConfig/issues) 中提出意见或建议。
 
 ## 如何在本地运行
 
